@@ -23,16 +23,21 @@ router.get('/metrics', function(req, res, next) {
          var cpu = obj.monit.cpu;
          var mem = obj.monit.memory;
          var restart = obj.pm2_env.restart_time;
-         var up = obj.pm2_env.online;
+         var up = obj.pm2_env.status=="online"?1:0;
          out += "pm2_"+name+"_cpu " + cpu + "\n";
          out += "pm2_"+name+"_memory " + mem + "\n";
-         out += "pm2_"+name+"_restart " + mem + "\n";
+         out += "pm2_"+name+"_restart " + restart + "\n";
+         out += "pm2_"+name+"_online " + up + "\n";
          for (var m in obj.pm2_env.axm_monitor) {
-           console.log(m);
+           if (m != "Loop delay") {
+             metric = obj.pm2_env.axm_monitor[m];
+             m=m.replace(/\-/g, '_');
+             out += "pm2_"+name+"_"+m+" " +metric.value;
+           }
          }
       }
-      console.log(out);
-      res.send(data);
+      res.set('Content-Type', 'text/plain');
+      res.send(out);
     }
   });
 });
