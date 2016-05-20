@@ -8,7 +8,8 @@ if ( !target_url ) {
 }
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+//  res.render('index', { title: 'Express' });
+  res.redirect('/metrics');
 });
 
 router.get('/metrics', function(req, res, next) {
@@ -24,6 +25,8 @@ router.get('/metrics', function(req, res, next) {
          var mem = obj.monit.memory;
          var restart = obj.pm2_env.restart_time;
          var up = obj.pm2_env.status=="online"?1:0;
+         name=name.replace(/\-/g, '_');
+         name=name.replace(/\W/g, '_');
          out += "pm2_"+name+"_cpu " + cpu + "\n";
          out += "pm2_"+name+"_memory " + mem + "\n";
          out += "pm2_"+name+"_restart " + restart + "\n";
@@ -32,7 +35,9 @@ router.get('/metrics', function(req, res, next) {
            if (m != "Loop delay") {
              metric = obj.pm2_env.axm_monitor[m];
              m=m.replace(/\-/g, '_');
-             out += "pm2_"+name+"_"+m+" " +metric.value;
+             m=m.replace(/\W/g, '_');
+             value = parseInt(metric.value);
+             out += "pm2_"+name+"_"+m+" " +value + "\n";
            }
          }
       }
