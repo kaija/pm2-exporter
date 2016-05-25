@@ -9,7 +9,11 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var exp = require('./export');
 
+exp.get_metrics(function(data){
+  console.log(data);
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
