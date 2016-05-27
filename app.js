@@ -18,7 +18,10 @@ if (config.schedule) {
     scratch.collect(function(data){
       var report = {};
       for (var i in data) {
-        report[i] = data[i] + "|s";
+        report[i] = data[i] + "|g";
+      }
+      if (config.debug) {
+        console.log(data);
       }
       metrics.send(report, 1);
     });
