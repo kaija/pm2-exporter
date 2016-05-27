@@ -18,17 +18,17 @@ exports.collect = function(cb){
         var up = obj.pm2_env.status=="online"?1:0;
         name=name.replace(/\-/g, '_');
         name=name.replace(/\W/g, '_');
-        out["pm2_"+name+"_cpu"] = cpu;
-        out["pm2_"+name+"_memory"] = mem;
-        out["pm2_"+name+"_restart"] = restart;
-        out["pm2_"+name+"_online"] = up;
+        out["pm2."+name+".cpu"] = cpu;
+        out["pm2."+name+".memory"] = mem;
+        out["pm2."+name+".restart"] = restart;
+        out["pm2."+name+".online"] = up;
         for (var m in obj.pm2_env.axm_monitor) {
           if (m != "Loop delay") {
             metric = obj.pm2_env.axm_monitor[m];
             m=m.replace(/\-/g, '_');
             m=m.replace(/\W/g, '_');
             value = parseFloat(metric.value);
-            out["pm2_"+name+"_"+m] = value;
+            out["pm2."+name+"."+m] = value;
           }
         }
       }
