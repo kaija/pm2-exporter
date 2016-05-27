@@ -15,10 +15,11 @@ pm2 start bin/exporter
 
 ```json
 {
+    "prepend_hostname": true,         // Append hostname before metrics
     "debug": false,                   // dump metrics
     "statsd_addr": "127.0.0.1",       // statsd server url
     "statsd_port": 8125,              // statsd port
-    "schedule": "0 * * * * * *"    // report cron job string
+    "schedule": "0 * * * * * *"       // report cron job string
 }
 ```
 

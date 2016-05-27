@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cron = require('node-cron');
 var lynx = require('lynx');
+var os = require("os");
 
 var scratch = require('./scratch.js');
 var config = require('./config');
@@ -18,7 +19,11 @@ if (config.schedule) {
     scratch.collect(function(data){
       var report = {};
       for (var i in data) {
-        report[i] = data[i] + "|g";
+        var m = i;
+        if (config.prepend_hostname) {
+          m = os.hostname() + "." + i;
+        }
+        report[m] = data[i] + "|g";
       }
       if (config.debug) {
         console.log(data);

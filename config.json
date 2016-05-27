@@ -1,4 +1,5 @@
 {
+    "prepend_hostname": true,
     "debug": false,
     "statsd_addr": "127.0.0.1",
     "statsd_port": 8125,
