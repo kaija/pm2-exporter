@@ -14,7 +14,8 @@ router.get('/metrics', function(req, res, next) {
     res.set('Content-Type', 'text/plain');
     var out = "";
     for (var i in data) {
-      out += i + " " + data[i] + "\n";
+      var m=i.replace(/\./g, '_');
+      out += m + " " + data[i] + "\n";
     }
     res.send(out);
   });
