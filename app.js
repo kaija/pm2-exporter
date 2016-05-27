@@ -4,9 +4,28 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cron = require('node-cron');
+var lynx = require('lynx');
 
+var scratch = require('./scratch.js');
+var config = require('./config');
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+if (config.schedule) {
+  var metrics = new lynx(config.statsd_addr, config.statd_port);
+  cron.schedule(config.schedule, function(){
+    scratch.collect(function(data){
+      var report = {};
+      for (var i in data) {
+        report[i] = data[i] + "|s";
+      }
+      metrics.send(report, 1);
+    });
+  });
+}
+
+
 
 var app = express();
 // view engine setup
